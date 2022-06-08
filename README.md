@@ -5,7 +5,6 @@
 **Useful Links:**
 - [Zed.dev](https://zed.dev/)
 - [Releases](https://zed.dev/releases)
-- [Zed Universe discord](https://discord.gg/SSD9eJrn6s)
 - [Twitter](https://twitter.com/zeddotdev)
 
 ## Welcome, Zed Insider!
@@ -22,10 +21,6 @@ We're excited to have you here to put Zed through its paces, give us feedback, a
 
 - Zed is currently only available on macOS.
 - We're focusing on a few key languages to start, and Zed currently works best with Rust, TypeScript, C, and C++, with support for additional languages soon to follow.
-
-### Join us on Discord
-
-Join the [Zed Insiders](https://discord.gg/SSD9eJrn6s) channel to engage with the Zed team and talk with fellow insiders. We're curious to talk with you about your experience. We'll also be asking questions there and sharing work in progress.
 
 ---
 
@@ -76,5 +71,4 @@ Zed will be eventually be extremely extensible, but we're going to get there inc
 
 ### Community
 
-- [Zed Universe Discord](https://discord.gg/SSD9eJrn6s)
 - [Code of Conduct](https://github.com/zed-industries/feedback/blob/main/CODE_OF_CONDUCT.md)
