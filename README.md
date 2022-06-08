@@ -16,7 +16,7 @@ We're excited to have you here to put Zed through its paces, give us feedback, a
 
 - Head over to [Releases](https://zed.dev/releases) (https://zed.dev/releases) and grab the latest copy of Zed. You can update the app from the menu bar: `Zed` -> `Check for Updates`.
 - You can report any issues you encounter in this repo. 
--  [Report an issue](https://github.com/zed-insiders/zed-insiders/issues/new) | [Feature requests](https://github.com/zed-insiders/zed-insiders/issues/new?assignees=&labels=request&template=feature_request.md&title=) | [All Issues](https://github.com/zed-insiders/zed-insiders/issues)
+-  [Report an issue](https://github.com/zed-industries/feedback/issues/new) | [Feature requests](https://github.com/zed-industries/feedback/issues/new?assignees=&labels=request&template=feature_request.md&title=) | [All Issues](https://github.com/zed-industries/feedback/issues)
 
 **Notes**
 
@@ -77,4 +77,4 @@ Zed will be eventually be extremely extensible, but we're going to get there inc
 ### Community
 
 - [Zed Universe Discord](https://discord.gg/SSD9eJrn6s)
-- [Code of Conduct](https://github.com/zed-industries/zed-insiders/blob/main/CODE_OF_CONDUCT.md)
+- [Code of Conduct](https://github.com/zed-industries/feedback/blob/main/CODE_OF_CONDUCT.md)
