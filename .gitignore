@@ -1,0 +1,4 @@
+.DS_Store
+.env
+.pytest_cache
+virtual_environment
