@@ -86,7 +86,7 @@ The main purpose of this issue is to provide the data of what testers might need
 
 ---
 
-*For details on how this issue is generated, [see the script]("https://github.com/zed-industries/feedback/blob/main/scripts/update_top_ranking_issues/main.py")*
+*For details on how this issue is generated, [see the script](https://github.com/zed-industries/feedback/blob/main/scripts/update_top_ranking_issues/main.py)*
 """
 
     return top_ranking_issues_body_text
