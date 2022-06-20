@@ -22,7 +22,15 @@ def main():
     repo_name = "zed-industries/feedback"
     repository = github.get_repo(repo_name)
 
-    label_name_exclusion_set = {"discussed", "meta", "needs info", "triage"}
+    # All of these labels are always paired with a more "core" label, so it is safe to filter these out, as these issues will always surface in another category
+    label_name_exclusion_set = {
+        "design",
+        "discussed",
+        "feature: language/library",
+        "meta",
+        "needs info",
+        "triage",
+    }
     label_name_to_issue_data_list_dictionary = get_label_name_to_issue_data_list_dictionary(github, repository, label_name_exclusion_set=label_name_exclusion_set)
 
     top_ranking_issues_body_text = get_top_ranking_issues_body_text(label_name_to_issue_data_list_dictionary)
