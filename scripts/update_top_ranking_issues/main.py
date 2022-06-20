@@ -38,7 +38,7 @@ def get_label_name_to_issue_data_list_dictionary(github, repository, label_name_
 
     for label_name in label_names:
         # TODO: Is there a way to apply the `max_issues_per_label` directly to the query string?  Would be much more efficient...
-        query_string = f"repo:{repository.full_name} is:open is:issue label:{label_name} sort:reactions-+1-desc sort:comments-desc sort:created-asc"
+        query_string = f"repo:{repository.full_name} is:open is:issue label:\"{label_name}\" sort:reactions-+1-desc sort:comments-desc sort:created-asc"
         issues = list(github.search_issues(query_string))
         issues = issues[0:max_issues_per_label]
 
