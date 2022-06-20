@@ -22,23 +22,28 @@ def main():
     repo_name = "zed-industries/feedback"
     repository = github.get_repo(repo_name)
 
-    label_name_exclusion_set = {"discussed", "meta", "needs info", "triage"}
-    label_name_to_issue_data_list_dictionary = get_label_name_to_issue_data_list_dictionary(github, repository, label_name_exclusion_set=label_name_exclusion_set)
+    label_name_inclusion_set = {
+        "defect",
+        "documentation",
+        "enhancement",
+        "polish",
+    }
+    label_name_to_issue_data_list_dictionary = get_label_name_to_issue_data_list_dictionary(github, repository, label_name_inclusion_set=label_name_inclusion_set)
 
     top_ranking_issues_body_text = get_top_ranking_issues_body_text(label_name_to_issue_data_list_dictionary)
     top_ranking_issues_issue = repository.get_issue(number=52)
     top_ranking_issues_issue.edit(body=top_ranking_issues_body_text)
 
 
-def get_label_name_to_issue_data_list_dictionary(github, repository, label_name_exclusion_set={}, max_issues_per_label=5):
+def get_label_name_to_issue_data_list_dictionary(github, repository, label_name_inclusion_set={}, max_issues_per_label=5):
     labels = repository.get_labels()
-    label_names = [label.name for label in labels if label.name not in label_name_exclusion_set]
+    label_names = [label.name for label in labels if label.name in label_name_inclusion_set]
 
     label_name_to_issue_data_list_dictionary = {}
 
     for label_name in label_names:
         # TODO: Is there a way to apply the `max_issues_per_label` directly to the query string?  Would be much more efficient...
-        query_string = f"repo:{repository.full_name} is:open is:issue label:{label_name} sort:reactions-+1-desc sort:comments-desc sort:created-asc"
+        query_string = f"repo:{repository.full_name} is:open is:issue label:\"{label_name}\" sort:reactions-+1-desc sort:comments-desc sort:created-asc"
         issues = list(github.search_issues(query_string))
         issues = issues[0:max_issues_per_label]
 
