@@ -22,25 +22,22 @@ def main():
     repo_name = "zed-industries/feedback"
     repository = github.get_repo(repo_name)
 
-    # All of these labels are always paired with a more "core" label, so it is safe to filter these out, as these issues will always surface in another category
-    label_name_exclusion_set = {
-        "design",
-        "discussed",
-        "feature: language/library",
-        "meta",
-        "needs info",
-        "triage",
+    label_name_inclusion_set = {
+        "defect",
+        "documentation",
+        "enhancement",
+        "polish",
     }
-    label_name_to_issue_data_list_dictionary = get_label_name_to_issue_data_list_dictionary(github, repository, label_name_exclusion_set=label_name_exclusion_set)
+    label_name_to_issue_data_list_dictionary = get_label_name_to_issue_data_list_dictionary(github, repository, label_name_inclusion_set=label_name_inclusion_set)
 
     top_ranking_issues_body_text = get_top_ranking_issues_body_text(label_name_to_issue_data_list_dictionary)
     top_ranking_issues_issue = repository.get_issue(number=52)
     top_ranking_issues_issue.edit(body=top_ranking_issues_body_text)
 
 
-def get_label_name_to_issue_data_list_dictionary(github, repository, label_name_exclusion_set={}, max_issues_per_label=5):
+def get_label_name_to_issue_data_list_dictionary(github, repository, label_name_inclusion_set={}, max_issues_per_label=5):
     labels = repository.get_labels()
-    label_names = [label.name for label in labels if label.name not in label_name_exclusion_set]
+    label_names = [label.name for label in labels if label.name in label_name_inclusion_set]
 
     label_name_to_issue_data_list_dictionary = {}
 
