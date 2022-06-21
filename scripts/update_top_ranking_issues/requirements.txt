@@ -1,2 +1,1 @@
 PyGithub==1.55
-python-dotenv==0.20.0

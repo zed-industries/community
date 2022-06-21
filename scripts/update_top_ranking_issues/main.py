@@ -1,6 +1,6 @@
+import sys
 from datetime import datetime
 
-from dotenv import dotenv_values
 from github import Github
 
 
@@ -16,7 +16,7 @@ class IssueData:
 
 
 def main():
-    github_access_token = dotenv_values(".env")["GITHUB_ACCESS_TOKEN"]
+    github_access_token = sys.argv[1]
     github = Github(github_access_token)
 
     repo_name = "zed-industries/feedback"
