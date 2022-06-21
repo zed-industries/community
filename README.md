@@ -1,7 +1,5 @@
 # Feedback on Zed
 
-*Last Updated: `Zed 0.39.0` (June 17, 2022)*
-
 **Useful Links:**
 - [Zed.dev](https://zed.dev/)
 - [Releases](https://zed.dev/releases)
