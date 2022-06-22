@@ -71,10 +71,10 @@ def get_top_ranking_issues_body_text(label_name_to_issue_data_list_dictionary):
 
     highest_ranking_issues_lines = []
 
-    for label, issue_dictionaries in label_name_to_issue_data_list_dictionary.items():
+    for label, issue_data_list in label_name_to_issue_data_list_dictionary.items():
         highest_ranking_issues_lines.append(f"\n## {label}\n")
 
-        for issue_data in issue_dictionaries:
+        for issue_data in issue_data_list:
             markdown_bullet_point = f"- {issue_data.url} ({issue_data.like_count} :thumbsup:, {issue_data.comment_count} :speech_balloon:, {issue_data.creation_datetime} :calendar:)"
             highest_ranking_issues_lines.append(markdown_bullet_point)
 
