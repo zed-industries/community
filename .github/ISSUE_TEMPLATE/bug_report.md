@@ -22,7 +22,7 @@ If applicable, add screenshots to help explain your problem.
 **Environment:**
 Copy & paste output of this command:
 ```sh
-echo -e "- Architecture: \`$(uname -m)\`\n- $(sw_vers -productName) Version: \`$(sw_vers -productVersion) ($(sw_vers -buildVersion))\`\n- Zed Version: \`$(/Applications/Zed.app/Contents/MacOS/cli --version | grep --only-matching --extended-regexp '[0-9]+\.[0-9]+\.[0-9]+')\`"
+echo -e "- Architecture: \`$(uname -m)\`\n- macOS Version: \`$(echo $(sw_vers))\`\n- Zed Version: \`$(/Applications/Zed.app/Contents/MacOS/cli --version)\`"
 ```
 
 **Additional context**
