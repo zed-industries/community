@@ -1,10 +1,11 @@
 import sys
 from datetime import datetime
+from pytz import timezone
 
 from github import Github
 
 
-DATETIME_FORMAT_STRING = "%m/%d/%Y %I:%M %p"
+DATETIME_FORMAT_STRING = "%m/%d/%Y %I:%M %p (%Z)"
 
 
 class IssueData:
@@ -66,7 +67,8 @@ def get_label_name_to_issue_data_list_dictionary(github, repository, label_name_
 
 
 def get_top_ranking_issues_body_text(label_name_to_issue_data_list_dictionary):
-    current_datetime = datetime.now().strftime(DATETIME_FORMAT_STRING)
+    tz = timezone("EST")
+    current_datetime = datetime.now(tz).strftime(DATETIME_FORMAT_STRING)
 
     highest_ranking_issues_lines = []
 
@@ -98,9 +100,4 @@ The main purpose of this issue is to provide the data of what testers might need
 
 
 if __name__ == "__main__":
-    start_time = datetime.now()
-
     main()
-
-    time_elapsed = datetime.now() - start_time
-    print(f"Time elapsed: {time_elapsed}")
