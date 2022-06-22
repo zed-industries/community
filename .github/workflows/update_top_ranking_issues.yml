@@ -2,7 +2,7 @@ on:
   issues:
     types: [closed]
   schedule:
-    - cron: "*/5 * * * *" # TODO: Change to a real schedule once everything works: 0 */12 * * *
+    - cron: "0 */12 * * *"
 
 jobs:
   update_top_ranking_issues:
