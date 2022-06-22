@@ -1,9 +1,8 @@
 import sys
 from datetime import datetime
-from pytz import timezone
 
 from github import Github
-
+from pytz import timezone
 
 DATETIME_FORMAT_STRING = "%m/%d/%Y %I:%M %p"
 
