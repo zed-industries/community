@@ -98,9 +98,4 @@ The main purpose of this issue is to provide the data of what testers might need
 
 
 if __name__ == "__main__":
-    start_time = datetime.now()
-
     main()
-
-    time_elapsed = datetime.now() - start_time
-    print(f"Time elapsed: {time_elapsed}")
