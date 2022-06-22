@@ -25,5 +25,3 @@ Copy & paste output of this command:
 echo -e "- Architecture: \`$(uname -m)\`\n- macOS Version: \`$(echo $(sw_vers))\`\n- Zed Version: \`$(/Applications/Zed.app/Contents/MacOS/cli --version)\`"
 ```
 
-**Additional context**
-Add any other context about the problem here.
