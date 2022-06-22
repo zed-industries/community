@@ -67,7 +67,7 @@ def get_label_name_to_issue_data_list_dictionary(github, repository, label_name_
 
 
 def get_top_ranking_issues_body_text(label_name_to_issue_data_list_dictionary):
-    tz = timezone("EDT")
+    tz = timezone("america/new_york")
     current_datetime = datetime.now(tz).strftime(f"{DATETIME_FORMAT_STRING} (%Z)")
 
     highest_ranking_issues_lines = []
