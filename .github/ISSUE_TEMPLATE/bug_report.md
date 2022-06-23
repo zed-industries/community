@@ -22,7 +22,7 @@ If applicable, add screenshots to help explain your problem.
 **Environment:**
 Copy & paste output of this command:
 ```sh
-echo -e "- Architecture: \`$(uname -m)\`\n- macOS Version: \`$(echo $(sw_vers))\`\n- Zed Version: \`$(/Applications/Zed.app/Contents/MacOS/cli --version)\`"
+echo $(/Applications/Zed.app/Contents/MacOS/cli --version) "\n"macOS $(sw_vers -productVersion) "\n"architecture $(uname -m)
 ```
 
 *If applicable, attach your `~/Library/Logs/Zed/Zed.log` file to this issue.*
