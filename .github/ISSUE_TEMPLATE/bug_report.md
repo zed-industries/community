@@ -7,6 +7,9 @@ assignees: ''
 
 ---
 
+**Before you begin**
+Check the backlog of issues to reduce the chances of creating duplicates; if an issue already exists, place a `+1` (👍) on it.
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
