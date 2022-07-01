@@ -11,7 +11,6 @@ class IssueData:
     def __init__(self, issue):
         self.url = issue.html_url
         self.like_count = sum(1 for reaction in issue.get_reactions() if reaction.content == "+1")
-        self.comment_count = issue.comments
         self.creation_datetime = issue.created_at.strftime(DATETIME_FORMAT_STRING)
 
 
@@ -42,19 +41,18 @@ def get_label_name_to_issue_data_list_dictionary(github, repository, label_name_
     label_name_to_issue_data_list_dictionary = {}
 
     for label_name in label_names:
-        # TODO: Is there a way to apply the `max_issues_per_label` directly to the query string?  Would be much more efficient...
-        query_string = f"repo:{repository.full_name} is:open is:issue label:\"{label_name}\" sort:reactions-+1-desc sort:comments-desc sort:created-asc"
+        query_string = f"repo:{repository.full_name} is:open is:issue label:\"{label_name}\""
         issues = list(github.search_issues(query_string))
         issues = issues[0:max_issues_per_label]
 
         if issues:
             issue_data_list = [IssueData(issue) for issue in issues]
+            issue_data_list.sort(key=lambda issue_data: (issue_data.like_count, issue_data.creation_datetime))
             label_name_to_issue_data_list_dictionary[label_name] = issue_data_list
 
     # Create a new dictionary with labels ordered by the summation the of likes on the associated issues
     label_names = list(label_name_to_issue_data_list_dictionary.keys())
 
-    # TODO: Potentially sort on multiple attributes (like count sum, comment count sum, etc.)
     label_names.sort(
         key=lambda label_name: sum(
             issue_data.like_count for issue_data in label_name_to_issue_data_list_dictionary[label_name]
@@ -75,7 +73,7 @@ def get_top_ranking_issues_body_text(label_name_to_issue_data_list_dictionary):
         highest_ranking_issues_lines.append(f"\n## {label}\n")
 
         for issue_data in issue_data_list:
-            markdown_bullet_point = f"- {issue_data.url} ({issue_data.like_count} :thumbsup:, {issue_data.comment_count} :speech_balloon:, {issue_data.creation_datetime} :calendar:)"
+            markdown_bullet_point = f"- {issue_data.url} ({issue_data.like_count} :thumbsup:, {issue_data.creation_datetime} :calendar:)"
             highest_ranking_issues_lines.append(markdown_bullet_point)
 
     top_ranking_issues_text = "\n".join(highest_ranking_issues_lines)
