@@ -42,12 +42,12 @@ def get_label_name_to_issue_data_list_dictionary(github, repository, label_name_
 
     for label_name in label_names:
         query_string = f"repo:{repository.full_name} is:open is:issue label:\"{label_name}\""
-        issues = list(github.search_issues(query_string))
-        issues = issues[0:max_issues_per_label]
+        
+        issue_data_list = [IssueData(issue) for issue in github.search_issues(query_string)]
+        issue_data_list.sort(key=lambda issue_data: (issue_data.like_count, issue_data.creation_datetime))
+        issue_data_list = issue_data_list[0:max_issues_per_label]
 
-        if issues:
-            issue_data_list = [IssueData(issue) for issue in issues]
-            issue_data_list.sort(key=lambda issue_data: (issue_data.like_count, issue_data.creation_datetime))
+        if issue_data_list:
             label_name_to_issue_data_list_dictionary[label_name] = issue_data_list
 
     # Create a new dictionary with labels ordered by the summation the of likes on the associated issues
