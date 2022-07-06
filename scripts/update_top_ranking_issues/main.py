@@ -25,6 +25,7 @@ def main():
         "defect",
         "documentation",
         "enhancement",
+        "panic / crash",
         "polish",
     }
     label_name_to_issue_data_list_dictionary = get_label_name_to_issue_data_list_dictionary(github, repository, label_name_inclusion_set=label_name_inclusion_set)
