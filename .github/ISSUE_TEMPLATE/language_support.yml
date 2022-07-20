@@ -32,6 +32,7 @@ body:
       required: false
   - type: textarea
     attributes:
-      label: Additional things the team should consider when adding support for this language
+      label: Misc notes
+      description: Provide any additional things the team should consider when adding support for this language
     validations:
       required: false
