@@ -30,9 +30,8 @@ body:
   - type: textarea
     attributes:
       label: Environment
-      description: Copy & paste output of this command
+      description: Replace command below with its output
       value: echo $(/Applications/Zed.app/Contents/MacOS/cli --version) "\n"macOS $(sw_vers -productVersion) "\n"architecture $(uname -m)
-      render: sh
     validations:
       required: true
   - type: textarea
