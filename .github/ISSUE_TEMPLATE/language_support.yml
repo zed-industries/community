@@ -18,14 +18,14 @@ body:
       required: true
   - type: input
     attributes:
-      label: Tree Sitter Parser
+      label: Tree Sitter parser link
       description: If applicable, provide a link to the appropriate tree sitter parser
       placeholder: https://github.com/tree-sitter/tree-sitter-html
     validations:
       required: false
   - type: input
     attributes:
-      label: Language Server
+      label: Language server link
       description: If applicable, provide a link to the appropriate language server
       placeholder: https://github.com/Microsoft/vscode/tree/main/extensions/html-language-features/server
     validations:
