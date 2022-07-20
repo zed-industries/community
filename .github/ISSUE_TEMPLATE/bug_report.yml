@@ -1,0 +1,49 @@
+name: Bug Report
+description: File a bug report
+labels: ["defect", "triage"]
+body:
+  - type: checkboxes
+    attributes:
+      label: Check for existing issues
+      description: Check the backlog of issues to reduce the chances of creating duplicates; if an issue already exists, place a `+1` (👍) on it.
+      options:
+        - label: Completed
+          required: true
+  - type: textarea
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: To reproduce
+      description: Steps to reproduce the behavior
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Environment
+      description: Copy & paste output of this command
+      value: echo $(/Applications/Zed.app/Contents/MacOS/cli --version) "\n"macOS $(sw_vers -productVersion) "\n"architecture $(uname -m)
+      render: sh
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: If applicable, add mockups / screenshots to help explain present your vision of the feature
+      description: Drag issues into the text input below
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: If applicable, attach your `~/Library/Logs/Zed/Zed.log` file to this issue
+      description: Drag Zed.log into the text input below
+    validations:
+      required: false
