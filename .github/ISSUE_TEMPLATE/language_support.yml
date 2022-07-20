@@ -30,3 +30,8 @@ body:
       placeholder: https://github.com/Microsoft/vscode/tree/main/extensions/html-language-features/server
     validations:
       required: false
+  - type: textarea
+    attributes:
+      label: Additional things the team should consider when adding support for this language
+    validations:
+      required: false
