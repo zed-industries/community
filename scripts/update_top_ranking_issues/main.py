@@ -6,6 +6,17 @@ from pytz import timezone
 
 DATETIME_FORMAT_STRING = "%m/%d/%Y %I:%M %p"
 
+CORE_LABEL_MAMES_SET = {
+    "defect",
+    "documentation",
+    "enhancement",
+    "panic / crash",
+    "polish",
+}
+
+class CommandLineArgumentException(Exception):
+    pass
+
 
 class IssueData:
     def __init__(self, issue):
@@ -15,38 +26,49 @@ class IssueData:
 
 
 def main():
+    if len(sys.argv) < 2:
+        raise CommandLineArgumentException("A GitHub access token must be supplied")
+
+    dev_mode = False
+
+    if len(sys.argv) == 3:
+        dev_mode_text = "dev_mode"
+
+        if sys.argv[2] == dev_mode_text:
+            dev_mode = True
+        else:
+            raise CommandLineArgumentException(f"If second argument is supplied, it must be  \"{dev_mode_text}\"")
+
     github_access_token = sys.argv[1]
     github = Github(github_access_token)
 
     repo_name = "zed-industries/feedback"
     repository = github.get_repo(repo_name)
 
-    label_name_inclusion_set = {
-        "defect",
-        "documentation",
-        "enhancement",
-        "panic / crash",
-        "polish",
-    }
-    label_name_to_issue_data_list_dictionary = get_label_name_to_issue_data_list_dictionary(github, repository, label_name_inclusion_set=label_name_inclusion_set)
+    label_name_to_issue_data_list_dictionary = get_label_name_to_issue_data_list_dictionary(github, repository)
 
     top_ranking_issues_body_text = get_top_ranking_issues_body_text(label_name_to_issue_data_list_dictionary)
-    top_ranking_issues_issue = repository.get_issue(number=52)
-    top_ranking_issues_issue.edit(body=top_ranking_issues_body_text)
+    
+    if dev_mode:
+        print(top_ranking_issues_body_text)
+    else:
+        top_ranking_issues_issue = repository.get_issue(number=52)
+        top_ranking_issues_issue.edit(body=top_ranking_issues_body_text)
 
 
-def get_label_name_to_issue_data_list_dictionary(github, repository, label_name_inclusion_set={}, max_issues_per_label=5):
+def get_label_name_to_issue_data_list_dictionary(github, repository):
     labels = repository.get_labels()
-    label_names = [label.name for label in labels if label.name in label_name_inclusion_set]
+    label_names = [label.name for label in labels if label.name in CORE_LABEL_MAMES_SET]
 
     label_name_to_issue_data_list_dictionary = {}
 
     for label_name in label_names:
+        print(f"Gathering issues for \"{label_name}\"")
         query_string = f"repo:{repository.full_name} is:open is:issue label:\"{label_name}\""
         
         issue_data_list = [IssueData(issue) for issue in github.search_issues(query_string)]
         issue_data_list.sort(key=lambda issue_data: (-issue_data.like_count, issue_data.creation_datetime))
-        issue_data_list = issue_data_list[0:max_issues_per_label]
+        issue_data_list = issue_data_list[0:5]
 
         if issue_data_list:
             label_name_to_issue_data_list_dictionary[label_name] = issue_data_list
