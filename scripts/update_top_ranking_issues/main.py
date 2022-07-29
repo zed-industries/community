@@ -6,7 +6,6 @@ from github import Github
 from pytz import timezone
 
 DATETIME_FORMAT_STRING = "%m/%d/%Y %I:%M %p"
-
 CORE_LABEL_NAMES_LIST = [
     "defect",
     "documentation",
@@ -20,6 +19,7 @@ IGNORED_LABEL_NAMES_LIST = [
     "platform support"
 ]
 IGNORED_LABEL_NAMES_SET = set(IGNORED_LABEL_NAMES_LIST)
+ISSUES_PER_LABEL = 5
 
 class CommandLineArgumentException(Exception):
     pass
@@ -30,6 +30,7 @@ class IssueData:
         self.url = issue.html_url
         self.like_count = sum(1 for reaction in issue.get_reactions() if reaction.content == "+1")
         self.creation_datetime = issue.created_at.strftime(DATETIME_FORMAT_STRING)
+        self.has_assignees = bool(issue.assignees)
 
 
 def main():
@@ -92,7 +93,8 @@ def get_issue_maps(github, repository):
         issue_list = label_name_to_issue_list_map[label_name]
         issue_data_list = [IssueData(issue) for issue in issue_list]
         issue_data_list.sort(key=lambda issue_data: (-issue_data.like_count, issue_data.creation_datetime))
-        issue_data_list = issue_data_list[0:5]
+        slice_end_index = get_slice_end_index(issue_data_list)
+        issue_data_list = issue_data_list[0:slice_end_index]
 
         if issue_data_list:
             label_name_to_issue_data_list_map[label_name] = issue_data_list
@@ -119,6 +121,22 @@ def get_issue_maps(github, repository):
     }
 
     return label_name_to_issue_data_list_map, error_message_to_erroneous_issue_data_list_map
+    
+
+def get_slice_end_index(issue_data_list):
+    slice_end_index = 0
+    issues_without_assignees_count = 0
+
+    for issue_data in issue_data_list:
+        slice_end_index += 1
+        
+        if not issue_data.has_assignees:
+            issues_without_assignees_count += 1
+
+            if issues_without_assignees_count == ISSUES_PER_LABEL:
+                break
+
+    return slice_end_index
 
 
 def get_issue_text(label_name_to_issue_data_list_dictionary, error_message_to_erroneous_issue_data_list_map):
@@ -156,6 +174,7 @@ def get_issue_text(label_name_to_issue_data_list_dictionary, error_message_to_er
         ])
 
     issue_text_lines.extend([
+        f"Issues that are italicized and decorated with a `*` have an assignee / are in progress and do not count towards the limit of {ISSUES_PER_LABEL} issues per label.\n",
         "*For details on how this issue is generated, [see the script](https://github.com/zed-industries/feedback/blob/main/scripts/update_top_ranking_issues/main.py)*"
     ])
 
@@ -170,7 +189,13 @@ def get_highest_ranking_issues_lines(label_name_to_issue_data_list_dictionary):
             highest_ranking_issues_lines.append(f"\n## {label}\n")
 
             for issue_data in issue_data_list:
-                markdown_bullet_point = f"- {issue_data.url} ({issue_data.like_count} :thumbsup:, {issue_data.creation_datetime} :calendar:)"
+                markdown_bullet_point = f"{issue_data.url} ({issue_data.like_count} :thumbsup:, {issue_data.creation_datetime} :calendar:)"
+                                    
+                if issue_data.has_assignees:
+                    markdown_bullet_point = f"*{markdown_bullet_point}* *"
+                
+                markdown_bullet_point = f"- {markdown_bullet_point}"
+                    
                 highest_ranking_issues_lines.append(markdown_bullet_point)
 
     return highest_ranking_issues_lines
