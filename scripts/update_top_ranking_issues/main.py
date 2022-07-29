@@ -121,7 +121,7 @@ def get_issue_maps(github, repository):
     }
 
     return label_name_to_issue_data_list_map, error_message_to_erroneous_issue_data_list_map
-    
+
 
 def get_slice_end_index(issue_data_list):
     slice_end_index = 0
@@ -129,7 +129,7 @@ def get_slice_end_index(issue_data_list):
 
     for issue_data in issue_data_list:
         slice_end_index += 1
-        
+
         if not issue_data.has_assignees:
             issues_without_assignees_count += 1
 
@@ -190,12 +190,12 @@ def get_highest_ranking_issues_lines(label_name_to_issue_data_list_dictionary):
 
             for issue_data in issue_data_list:
                 markdown_bullet_point = f"{issue_data.url} ({issue_data.like_count} :thumbsup:, {issue_data.creation_datetime} :calendar:)"
-                                    
+
                 if issue_data.has_assignees:
                     markdown_bullet_point = f"*{markdown_bullet_point}* *"
-                
+
                 markdown_bullet_point = f"- {markdown_bullet_point}"
-                    
+
                 highest_ranking_issues_lines.append(markdown_bullet_point)
 
     return highest_ranking_issues_lines
