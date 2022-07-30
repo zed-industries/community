@@ -151,7 +151,7 @@ def get_issue_text(label_name_to_issue_data_list_dictionary, error_message_to_er
         "---\n",
         f"*Updated on {current_datetime}*",
         *highest_ranking_issues_lines,
-        "\n"
+        "",
         "---\n",
     ]
 
@@ -169,7 +169,7 @@ def get_issue_text(label_name_to_issue_data_list_dictionary, error_message_to_er
             "- Adjust the core labels on an issue to put it into a correct state or add a currently-ignored label to the issue",
             "- Adjust the core and ignored labels registered in this script",
             *erroneous_issues_lines,
-            "\n"
+            "",
             "---\n",
         ])
 
