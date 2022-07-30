@@ -16,7 +16,9 @@ CORE_LABEL_NAMES_LIST = [
 CORE_LABEL_NAMES_SET = set(CORE_LABEL_NAMES_LIST)
 IGNORED_LABEL_NAMES_LIST = [
     "meta",
-    "platform support"
+    "linux",
+    "web",
+    "windows",
 ]
 IGNORED_LABEL_NAMES_SET = set(IGNORED_LABEL_NAMES_LIST)
 ISSUES_PER_LABEL = 5
