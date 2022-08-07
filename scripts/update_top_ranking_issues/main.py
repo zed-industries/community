@@ -97,13 +97,9 @@ def get_issue_maps(github, repository):
             error_message_to_erroneous_issue_list_map["missing core label"].append(
                 issue
             )
-        elif len(core_labels_on_issue_set) == 1:
-            label_name = core_labels_on_issue_set.pop()
-            label_name_to_issue_list_map[label_name].append(issue)
         else:
-            error_message_to_erroneous_issue_list_map["too many core labels"].append(
-                issue
-            )
+            for core_label_on_issue in core_labels_on_issue_set:
+                label_name_to_issue_list_map[core_label_on_issue].append(issue)
 
     label_name_to_issue_data_list_map = {}
 
@@ -203,7 +199,7 @@ def get_issue_text(
         issue_text_lines.extend(
             [
                 "## errors with issues (this section only shows when there are errors with issues)\n",
-                f"This script expects every issue to have only one of the following core labels: {core_label_names_string}",
+                f"This script expects every issue to have at least one of the following core labels: {core_label_names_string}",
                 f"This script currently ignores issues that have one of the following labels: {ignored_label_names_string}\n",
                 "### what to do?\n",
                 "- Adjust the core labels on an issue to put it into a correct state or add a currently-ignored label to the issue",
