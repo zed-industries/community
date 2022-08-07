@@ -8,6 +8,7 @@ from pytz import timezone
 DATETIME_FORMAT_STRING = "%m/%d/%Y %I:%M %p"
 CORE_LABEL_NAMES_LIST = [
     "defect",
+    "design",
     "documentation",
     "enhancement",
     "panic / crash",
