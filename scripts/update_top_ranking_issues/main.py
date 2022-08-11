@@ -32,9 +32,7 @@ class CommandLineArgumentException(Exception):
 class IssueData:
     def __init__(self, issue):
         self.url = issue.html_url
-        self.like_count = sum(
-            1 for reaction in issue.get_reactions() if reaction.content == "+1"
-        )
+        self.like_count = issue._rawData["reactions"]["+1"]
         self.creation_datetime = issue.created_at.strftime(DATETIME_FORMAT_STRING)
         self.has_assignees = bool(issue.assignees)
 
