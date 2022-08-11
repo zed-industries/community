@@ -257,7 +257,10 @@ def get_erroneous_issues_lines(error_message_to_erroneous_issue_data_list_map):
 
 
 if __name__ == "__main__":
+    start_time = datetime.now()
     main()
+    run_duration = datetime.now() - start_time
+    print(run_duration)
 
 # TODO: Progress prints
 # - "Gathering issues..."
