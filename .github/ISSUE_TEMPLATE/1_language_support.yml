@@ -1,6 +1,6 @@
 name: Language Support
 description: Request language support
-labels: ["enhancement", "language / framework", "triage"]
+labels: ["enhancement", "language", "triage"]
 body:
   - type: checkboxes
     attributes:
