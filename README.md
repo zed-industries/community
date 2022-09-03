@@ -46,7 +46,7 @@ To stop sharing, simply close the project window.
 - Our goal is for collaboration to be seamless, but we don't yet automatically reconnect after intermittent connection loss and server deploys.
 - We have search, but we don't currently support replace.
 - Splits cannot be resized.
-- Some mouse-based interactions (dragging tabs, scroll bars, etc) are missing.
+- Some mouse-based interactions (scroll bars, etc) are missing.
 - We bundle support for specific language servers, and there's not currently a way to specify specific versions or interface to non-bundled servers.
 - Files containing a mix of languages (like CSS in JS/TS) will not syntax highlight correctly.
 - No Git integration.
