@@ -24,8 +24,10 @@ body:
   - type: textarea
     attributes:
       label: Environment
-      description: Replace command below with its output
-      value: echo $(/Applications/Zed.app/Contents/MacOS/cli --version) "\n"macOS $(sw_vers -productVersion) "\n"architecture $(uname -m)
+      description: |
+        Replace command below with its output.
+        *Make sure to have the Zed CLI installed: Zed > Zed menu > `Install CLI`.*
+      value: echo $(zed --version) "\n"macOS $(sw_vers -productVersion) "\n"architecture $(uname -m)
     validations:
       required: true
   - type: textarea
