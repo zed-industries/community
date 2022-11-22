@@ -21,6 +21,6 @@ We're excited to have you here to put Zed through its paces, give us feedback, a
 - [Code of Conduct](https://github.com/zed-industries/feedback/blob/main/CODE_OF_CONDUCT.md)
 
 **Useful Links:**
-- For docs and general information, visit [Zed.dev](https://zed.dev/)
+- Visit [Zed.dev](https://zed.dev/) for docs and general information
 - [Releases](https://zed.dev/releases)
 - [Twitter](https://twitter.com/zeddotdev)
