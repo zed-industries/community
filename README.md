@@ -17,7 +17,7 @@ We're excited to have you here to put Zed through its paces, give us feedback, a
 ### Community
 
 - Post in [Zed Community Q&A](https://github.com/zed-industries/feedback/discussions/categories/zed-community-q-a) to get answers to Zed questions
-- For casual chatting, use our [Discord server](https://discord.gg/SSD9eJrn6s)
+- Use our [Discord server](https://discord.gg/SSD9eJrn6s) for casual conversation
 - [Code of Conduct](https://github.com/zed-industries/feedback/blob/main/CODE_OF_CONDUCT.md)
 
 **Useful Links:**
