@@ -16,6 +16,7 @@ body:
     validations:
       required: true
   - type: textarea
+    id: environment
     attributes:
       label: Environment
       description: |
