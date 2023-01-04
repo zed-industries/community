@@ -20,8 +20,8 @@ body:
     attributes:
       label: Environment
       description: |
-        Replace command below with its output.
-        *Make sure to have the Zed CLI installed: Zed > Zed menu > `Install CLI`.*
+        In v0.68.0 and later, you can open a bug report, with the environment data pre-filled, by using the `file bug report` command.
+        For versions prior to that, run the command below in a terminal and paste the output (requires Zed CLI: Zed > Zed menu > `Install CLI`)
       value: echo $(zed --version) "\n"macOS $(sw_vers -productVersion) "\n"architecture $(uname -m)
     validations:
       required: true
