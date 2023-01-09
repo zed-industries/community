@@ -22,7 +22,7 @@ IGNORED_LABEL_NAMES_LIST = [
     "windows",
 ]
 IGNORED_LABEL_NAMES_SET = set(IGNORED_LABEL_NAMES_LIST)
-ISSUES_PER_LABEL = 5
+UPVOTES_REQUIRED_TO_SHOW_ISSUE = 5
 
 
 class CommandLineArgumentException(Exception):
@@ -34,7 +34,6 @@ class IssueData:
         self.url = issue.html_url
         self.like_count = issue._rawData["reactions"]["+1"]
         self.creation_datetime = issue.created_at.strftime(DATETIME_FORMAT_STRING)
-        self.has_assignees = bool(issue.assignees)
 
 
 def main():
@@ -110,8 +109,7 @@ def get_issue_maps(github, repository):
                 issue_data.creation_datetime,
             )
         )
-        slice_end_index = get_slice_end_index(issue_data_list)
-        issue_data_list = issue_data_list[0:slice_end_index]
+        issue_data_list = [issue for issue in issue_data_list if issue.like_count >= UPVOTES_REQUIRED_TO_SHOW_ISSUE]
 
         if issue_data_list:
             label_name_to_issue_data_list_map[label_name] = issue_data_list
@@ -143,22 +141,6 @@ def get_issue_maps(github, repository):
         label_name_to_issue_data_list_map,
         error_message_to_erroneous_issue_data_list_map,
     )
-
-
-def get_slice_end_index(issue_data_list):
-    slice_end_index = 0
-    issues_without_assignees_count = 0
-
-    for issue_data in issue_data_list:
-        slice_end_index += 1
-
-        if not issue_data.has_assignees:
-            issues_without_assignees_count += 1
-
-            if issues_without_assignees_count == ISSUES_PER_LABEL:
-                break
-
-    return slice_end_index
 
 
 def get_issue_text(
@@ -207,7 +189,6 @@ def get_issue_text(
 
     issue_text_lines.extend(
         [
-            f"Issues that are italicized and decorated with a `*` have an assignee / are in progress and do not count towards the limit of {ISSUES_PER_LABEL} issues per label.\n",
             "*For details on how this issue is generated, [see the script](https://github.com/zed-industries/feedback/blob/main/scripts/update_top_ranking_issues/main.py)*",
         ]
     )
@@ -224,9 +205,6 @@ def get_highest_ranking_issues_lines(label_name_to_issue_data_list_dictionary):
 
             for issue_data in issue_data_list:
                 markdown_bullet_point = f"{issue_data.url} ({issue_data.like_count} :thumbsup:, {issue_data.creation_datetime} :calendar:)"
-
-                if issue_data.has_assignees:
-                    markdown_bullet_point = f"*{markdown_bullet_point}* *"
 
                 markdown_bullet_point = f"- {markdown_bullet_point}"
 
