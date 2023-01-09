@@ -173,9 +173,6 @@ def get_issue_text(
     )
 
     issue_text_lines = [
-        "The main purpose of this issue is to provide the data of what testers might need in order to be able to use Zed more.  It should be noted that this issue's existence does not imply that anything will be prioritized differently; the Zed devs likely have their own process for how things are prioritized - this is simply a data set that *can* be used.\n",
-        "**If there are defects / missing features that are slowing you down or preventing you from using Zed, make sure to file issues and vote on them, to bubble them up.  This list becomes more useful the more votes issues get.**\n",
-        "---\n",
         f"*Updated on {current_datetime}*",
         *highest_ranking_issues_lines,
         "",
