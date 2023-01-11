@@ -4,7 +4,7 @@ Zed’s communities (Discord, Github, Discourse, and beyond) are places for disc
 
 ## What’s permissible:
 
-- Hquestions
+- Questions relating to operating Zed
 - Zed workflow tips
 - Feedback
 - Watercooler topics. For example, Advent of Code, the release of a new editor or software tool, a personal project you have been working on, recent news, well wishes, etc.
