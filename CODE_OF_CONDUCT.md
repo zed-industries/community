@@ -1,25 +1,26 @@
-# Zed Universe is a community and creative space for feedback, development and learning.
+# Code of Conduct for Zed Communities
 
-We are dedicated to providing a harassment-free experience for all participants so we can indulge our curiosity with total freedom.
+Zed’s communities (Discord, Github, Discourse, and beyond) are places for discussions about code, text editors, the software industry, and fields directly related to it. We reserve the right to exclude anyone from these spaces if they're engaging in harmful behavior.  These are professional settings for discussing Zed, software engineering & related topics. You don’t need to be in formal wear – just try to keep things at least semi-professional and on-topic.
 
-This code of conduct applies to the entire arena of Zed Universe, including the Discord server, issues and discussions on Github, and other areas related to Zed's operations, both online and off. We reserve the right to exclude anyone from these spaces if they're engaging in harmful behavior.
+## What’s permissible:
 
-## What's not okay? 
+- Hquestions
+- Zed workflow tips
+- Feedback
+- Watercooler topics. For example, Advent of Code, the release of a new editor or software tool, a personal project you have been working on, recent news, well wishes, etc.
 
-Conduct that interferes with another member's ability to learn and grow. This stuff is not acceptable:
+## What’s not tolerated:
 
-- Offensive comments related to gender (including identity and expression), sexual orientation, disability, physical appearance, body size, age, race, or religion.
-- Initiating unwanted and inappropriate social contact.
-- Gratuitous or off-topic discussion of a sexual nature.
-- Threatening violence or trying to incite it.
-- Deliberate intimidation and disruption, including stalking and following.
+- We don’t tolerate harassment of any kind – keep the conversation on the aforementioned topics.  Beyond that, *we will generally perceive comments on anyone’s appearance, gender (including identity and expression), sexual orientation, disability, physical appearance, body size, age, race, or religion as harassment; after a warning, you will be banned*.
+- Feel free to ask questions or talk about your favorite tools, but the Zed staff is not obligated to justify their technical decisions, or build your pet feature. Pushiness regarding these topics is explicitly prohibited.
+- Don’t spam, growth hack, or otherwise solicit without an explicit request from a specific user. It is ok to share something you’re working on and talk shop, but announcing a new release, asking for volunteers, or sharing your personal newsletter unprompted are all considered soliciting.
 
-We will prioritize safety and the comfort of the people in our community over openness – Zed Universe is a private space run by Zed Industries. We won't hesitate to remove offensive or combative content, and exclude people from the space that insist on pushing against the rules.
+We will prioritize safety and the comfort of the people in our community over openness – this is a private space run by Zed Industries. We won't hesitate to remove offensive or combative content, and exclude people from the space that insist on pushing against the rules.
 
-If you're experiencing any of the above in this community, notice it happening to someone else, or have any other safety-related concerns, please contact [nate@zed.dev](mail-to:nate@zed.dev). If you need an alternate point of contact you can reach out to [max@zed.dev](mail-to:max@zed.dev).
+If you are experiencing any of the above in this community, notice that it is happening to someone else, or have any other safety-related concerns, please contact one of the following Zed team members: 
+
+- [joseph@zed.dev](mail-to:joseph@zed.dev)
+- [mikayla@zed.dev](mail-to:mikayla@zed.dev)
+- [kay@zed.dev](mail-to:kay@zed.dev)
 
 We will respond to you as quickly as possible, respect confidentiality requests, and take all good-faith reports of harassment seriously.
-
----
-
-Based on 3dfordesigners' [Code of Conduct](https://www.3dfordesigners.com/pages/code-of-conduct).
