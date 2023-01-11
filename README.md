@@ -18,7 +18,9 @@ We're excited to have you here to put Zed through its paces, give us feedback, a
 
 **Make sure to read our [Code of Conduct](https://zed.dev/docs/community/code-of-conduct) document before entering into any of the following communities.**
 
-- Use our [Discord server](https://discord.gg/SSD9eJrn6s) for casual conversation
+- Use our [community forum](https://forum.zed.dev) to ask Zed-related questions and show off cool workflows you’ve developed. 
+- Use GitHub Issues within this repository to file bug report and feature requests
+- Use our [Discord server](https://discord.gg/SSD9eJrn6s) for casual Zed-based conversation
 
 **Useful Links:**
 - Visit [Zed.dev](https://zed.dev/) for docs and general information
