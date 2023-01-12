@@ -1,13 +1,13 @@
 name: Feature Request
-description: Suggest a feature
+description: |
+  Suggest a feature
+  Tip: open this issue template from within Zed with the `request feature` command palette action
 labels: ["enhancement", "triage"]
 body:
   - type: checkboxes
     attributes:
       label: Check for existing issues
-      description: >
-        Check the backlog of issues to reduce the chances of creating duplicates;
-        if an issue already exists, place a `+1` (👍) on it.
+      description: Check the backlog of issues to reduce the chances of creating duplicates; if an issue already exists, place a `+1` (👍) on it.
       options:
         - label: Completed
           required: true
@@ -18,8 +18,9 @@ body:
     validations:
       required: true
   - type: textarea
-    attributes:
-      label: If applicable, add mockups / screenshots to help present your vision of the feature
+    attributes: |
+      label: |
+        If applicable, add mockups / screenshots to help present your vision of the feature
       description: Drag issues into the text input below
     validations:
       required: false
