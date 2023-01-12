@@ -1,7 +1,5 @@
 name: Feature Request
-description: |
-  Suggest a feature
-  Tip: open this issue template from within Zed with the `request feature` command palette action
+description: "Tip: open this issue template from within Zed with the `request feature` command palette action"
 labels: ["enhancement", "triage"]
 body:
   - type: checkboxes
@@ -18,7 +16,7 @@ body:
     validations:
       required: true
   - type: textarea
-    attributes: |
+    attributes:
       label: |
         If applicable, add mockups / screenshots to help present your vision of the feature
       description: Drag issues into the text input below

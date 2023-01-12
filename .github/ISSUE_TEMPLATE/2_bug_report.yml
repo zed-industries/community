@@ -1,7 +1,5 @@
 name: Bug Report
-description: |
-  File a bug report 
-  Tip: open this issue template from within Zed with the `file bug report` command palette action
+description: "Tip: open this issue template from within Zed with the `file bug report` command palette action"
 labels: ["defect", "triage"]
 body:
   - type: checkboxes
