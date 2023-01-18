@@ -6,6 +6,9 @@ body:
     attributes:
       label: Check for existing issues
       description: Check the backlog of issues to reduce the chances of creating duplicates; if an issue already exists, place a `+1` (👍) on it.
+      options:
+        - label: Completed
+          required: true
   - type: input
     attributes:
       label: Page link
