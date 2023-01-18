@@ -1,0 +1,18 @@
+name: Documentation Issue
+description: Report typos, questions about the documentation, or ask how two sections relate
+labels: ["documentation", "triage"]
+body:
+  - type: checkboxes
+    attributes:
+      label: Check for existing issues
+      description: Check the backlog of issues to reduce the chances of creating duplicates; if an issue already exists, place a `+1` (👍) on it.
+  - type: input
+    attributes:
+      label: Page link
+      description: Where the documentation this issue is about can be found.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Description
+      description: What could be improved? How could the section be worded better or better understandable?
