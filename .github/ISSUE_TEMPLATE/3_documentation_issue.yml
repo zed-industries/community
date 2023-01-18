@@ -1,6 +1,6 @@
 name: Documentation Issue
 description: Report typos, questions about the documentation, or ask how two sections relate
-labels: ["documentation"]
+labels: ["documentation", "triage"]
 body:
   - type: checkboxes
     attributes:
