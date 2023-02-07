@@ -9,7 +9,7 @@ Welcome to Zed's community! **Please make sure to review our [Code of Conduct](h
 
 ### Forum
 
-- Leverage the [community forum](https://github.com/zed-industries/community/discussions) to find answers to common questions and show off cool workflows you’ve developed.
+- Leverage the [community forum](https://github.com/zed-industries/community/discussions) to find answers to commonly-asked questions and show off cool workflows you’ve developed.
 
 ### Releases
 
