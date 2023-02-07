@@ -55,7 +55,7 @@ def main():
     github_access_token = sys.argv[1]
     github = Github(github_access_token)
 
-    repo_name = "zed-industries/feedback"
+    repo_name = "zed-industries/community"
     repository = github.get_repo(repo_name)
 
     (
@@ -189,7 +189,7 @@ def get_issue_text(
 
     issue_text_lines.extend(
         [
-            "*For details on how this issue is generated, [see the script](https://github.com/zed-industries/feedback/blob/main/scripts/update_top_ranking_issues/main.py)*",
+            "*For details on how this issue is generated, [see the script](https://github.com/zed-industries/community/blob/main/scripts/update_top_ranking_issues/main.py)*",
         ]
     )
 
