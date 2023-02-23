@@ -1,8 +1,6 @@
 on:
-  issues:
-    types: [closed]
   schedule:
-    - cron: "0 */12 * * *"
+    - cron: "0 */6 * * *"
 
 jobs:
   update_top_ranking_issues:
