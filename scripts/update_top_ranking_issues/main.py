@@ -49,7 +49,7 @@ def main():
             dev_mode = True
         else:
             raise CommandLineArgumentException(
-                f'If second argument is supplied, it must be  "{dev_mode_text}"'
+                f'If second argument is supplied, it must be "{dev_mode_text}"'
             )
 
     github_access_token = sys.argv[1]
