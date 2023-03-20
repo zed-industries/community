@@ -34,6 +34,8 @@ class IssueData:
         self.url = issue.html_url
         self.like_count = issue._rawData["reactions"]["+1"]
         self.creation_datetime = issue.created_at.strftime(DATETIME_FORMAT_STRING)
+        # TODO: Change script to support storing labels here, rather than directly in the script
+        self.labels = set(label["name"] for label in issue._rawData["labels"])
 
 
 def main():
@@ -83,7 +85,7 @@ def get_issue_maps(github, repository):
     error_message_to_erroneous_issue_list_map = defaultdict(list)
 
     for issue in github.search_issues(query_string):
-        labels_on_issue_set = set(label.name for label in issue.labels)
+        labels_on_issue_set = set(label["name"] for label in issue._rawData["labels"])
         core_labels_on_issue_set = labels_on_issue_set & CORE_LABEL_NAMES_SET
         ignored_labels_on_issue_set = labels_on_issue_set & IGNORED_LABEL_NAMES_SET
 
