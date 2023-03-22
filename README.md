@@ -1,6 +1,6 @@
 # Community
 
-Welcome to Zed's community! **Please make sure to review our [Code of Conduct](https://zed.dev/docs/community/code-of-conduct) document.**
+Welcome to Zed's community! **Please make sure to review our [Code of Conduct](https://docs.zed.dev/community/code-of-conduct) document.**
 
 ### Feedback
 
