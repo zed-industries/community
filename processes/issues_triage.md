@@ -24,4 +24,4 @@ For languages that we don't support, we use the same labels as in steps 1 and 2,
 
 ## Convert to issues to discussions
 
-Once in a while, users will make issues that ask questions that are better served as discussions.  Since we are trying to build up our community Q&A, we've been trying to identify and convert these.
+Once in a while, users will make issues that ask questions that are better served as discussions.  Since we are trying to build up our community [Q&A](https://github.com/zed-industries/community/discussions/categories/q-a), we've been trying to identify and convert these.
