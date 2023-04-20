@@ -1,8 +1,4 @@
-import calendar
-import pprint
 import sys
-import time
-from collections import defaultdict
 from datetime import datetime
 
 from github import Github
@@ -49,9 +45,7 @@ def main():
     issue_data_list.sort(key=lambda issue_data: issue_data.like_count, reverse=True)
 
     for issue_data in issue_data_list:
-        like_usres = [user.login for user in issue_data.like_users]
-        print(f"{issue_data.title}: {like_usres}, {issue_data.like_count} 👍")
-        print()
+        print(f"{issue_data.title}: {issue_data.like_count} 👍")
 
     print("-----------")
 
