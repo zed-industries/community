@@ -1,6 +1,6 @@
 # Issue triage
 
-All issue templates automatically add the `triage` label to new issues.  This makes it easy to see what we need to read, respond to, and label.  After a issue is triaged, we remove this label.  If we add future maintainers, we will need to use a different system that prevents issues triaged by community maintainers from being difficult to discover as "new" issues; we still want to read everything submitted by users so that we can keep a pulse on what the community wants.  [Flutter uses a primary and secondary triage label system](https://medium.com/flutter/managing-issues-in-a-large-scale-open-source-project-b3be6eecae2b), maybe this could be adopted, in some form, to represent different groups having seen the issue.
+All issue templates automatically add the `triage` and `admin read` labels to new issues.  This makes it easy to see what we need to read, respond to, and label.  If the issue is triaged by a maintainer, the `triage` label can be removed.  If the issue is triaged by an admin, both labels can be removed.
 
 ## Duplicates
 
