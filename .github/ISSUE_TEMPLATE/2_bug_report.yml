@@ -1,6 +1,6 @@
 name: Bug Report
 description: "Tip: open this issue template from within Zed with the `file bug report` command palette action"
-labels: ["defect", "triage"]
+labels: ["defect", "triage", "admin read"]
 body:
   - type: checkboxes
     attributes:
