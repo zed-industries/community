@@ -1,4 +1,7 @@
+import calendar
+import pprint
 import sys
+import time
 from collections import defaultdict
 from datetime import datetime
 
@@ -31,9 +34,12 @@ class CommandLineArgumentException(Exception):
 
 class IssueData:
     def __init__(self, issue):
+        self.title = issue.title
         self.url = issue.html_url
         self.like_count = issue._rawData["reactions"]["+1"]
-        self.creation_datetime = issue.created_at.strftime(DATETIME_FORMAT_STRING)
+        self.creation_datetime = issue._rawData["created_at"].strftime(
+            DATETIME_FORMAT_STRING
+        )
         # TODO: Change script to support storing labels here, rather than directly in the script
         self.labels = set(label["name"] for label in issue._rawData["labels"])
 
@@ -56,6 +62,18 @@ def main():
 
     github_access_token = sys.argv[1]
     github = Github(github_access_token)
+    rl = github.get_rate_limit()
+    rl_core = rl.core
+    rl_core = rl.core
+    rl_search = rl.search
+    print(rl_core, rl_search)
+    # exit()
+    # core_rate_limit = github.get_rate_limit().core
+    # reset_timestamp = calendar.timegm(core_rate_limit.reset.timetuple())
+    # sleep_time = reset_timestamp - calendar.timegm(time.gmtime())
+    # # time.sleep(sleep_time)
+    # print(sleep_time)
+    # exit()
 
     repo_name = "zed-industries/community"
     repository = github.get_repo(repo_name)
@@ -84,7 +102,9 @@ def get_issue_maps(github, repository):
     label_name_to_issue_list_map = defaultdict(list)
     error_message_to_erroneous_issue_list_map = defaultdict(list)
 
-    for issue in github.search_issues(query_string):
+    for count, issue in enumerate(github.search_issues(query_string)):
+        pprint.pprint(vars(issue))
+        exit()
         labels_on_issue_set = set(label["name"] for label in issue._rawData["labels"])
         core_labels_on_issue_set = labels_on_issue_set & CORE_LABEL_NAMES_SET
         ignored_labels_on_issue_set = labels_on_issue_set & IGNORED_LABEL_NAMES_SET

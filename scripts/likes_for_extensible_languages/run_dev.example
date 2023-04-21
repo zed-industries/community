@@ -1,2 +1,0 @@
-# Duplicate this file and rename it to `run_dev.sh`
-python3 main.py <Personal Access Token> dev_mode
