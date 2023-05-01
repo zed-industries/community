@@ -1,7 +1,7 @@
 name: Language Support
 description: Request language support
 title: "<name_of_language> support"
-labels: ["enhancement", "language", "unsupported", "triage", "admin read"]
+labels: ["enhancement", "language", "unsupported", "triage", "admin read", "potential plugin"]
 body:
   - type: checkboxes
     attributes:
