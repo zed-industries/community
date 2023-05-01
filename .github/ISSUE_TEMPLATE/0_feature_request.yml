@@ -1,6 +1,6 @@
 name: Feature Request
 description: "Tip: open this issue template from within Zed with the `request feature` command palette action"
-labels: ["enhancement", "triage", "admin read"]
+labels: ["admin read", "triage", "enhancement"]
 body:
   - type: checkboxes
     attributes:
