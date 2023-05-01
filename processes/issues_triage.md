@@ -16,9 +16,14 @@ For languages we support, we always include:
 
 1. Either the `enhancement` or `defect` core labe
 2. The generic `language` label
-3. The specific language label (`rust`, `python`, etc.).
+3. The specific language label (`rust`, `python`, etc.)
 
 For languages that we don't support, we use the same labels as in steps 1 and 2, but we add `unsupported` as a third generic label.  We don't create labels for specific languages that we don't support, as it adds a lot of clutter.
+
+## Additional Labels
+
+- If a request seems to fit more into the category of a plugin, add the `potential plugin` label.
+- If a request feels like it wouldn't take much work to add, but would dramatically improve Zed, add the `quality week` label.  `quality week` can go on enhancement or defect issues.
 
 ## Convert to issues to discussions
 
