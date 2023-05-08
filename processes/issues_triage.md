@@ -18,7 +18,7 @@ For languages we support, we always include:
 2. The generic `language` label
 3. The specific language label (`rust`, `python`, etc.)
 
-For languages that we don't support, we use the same labels as in steps 1 and 2, but we add `unsupported` as a third generic label.  We don't create labels for specific languages that we don't support, as it adds a lot of clutter.
+For languages that we don't support, we use the same labels as in steps 1 and 2, but we add `unsupported language` as a third generic label.  We don't create labels for specific languages that we don't support, as it adds a lot of clutter.
 
 ## Additional Labels
 
