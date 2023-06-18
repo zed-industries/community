@@ -11,8 +11,7 @@ CORE_LABEL_NAMES_LIST = [
     "design",
     "documentation",
     "enhancement",
-    "panic / crash",
-    "polish",
+    "panic / crash"
 ]
 CORE_LABEL_NAMES_SET = set(CORE_LABEL_NAMES_LIST)
 IGNORED_LABEL_NAMES_LIST = [
