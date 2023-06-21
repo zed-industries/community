@@ -4,7 +4,7 @@ Welcome to Zed's community! **Please make sure to review our [Code of Conduct](h
 
 ### Feedback
 
-- Use our [issue tracker](https://github.com/zed-industries/feedback/issues/new/choose) to request features and file bug reports.
+- Use our [issue tracker](https://github.com/zed-industries/community/issues/new/choose) to request features and file bug reports.
 - Anonymous feedback can be submitted from within Zed via the feedback editor (command palette > `give feedback`).
 
 ### Forum
