@@ -1,5 +1,6 @@
 .DS_Store
 .env
 .pytest_cache
+.venv
 run_dev.sh
 virtual_environment
