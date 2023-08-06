@@ -50,6 +50,9 @@ def main(prod, github_token):
     github_token = github_token or os.getenv("GITHUB_TOKEN")
     github = Github(github_token)
 
+    remaining_requests_before, _ = github.rate_limiting
+    print(f"Remaining requests before: {remaining_requests_before}")
+
     repo_name = "zed-industries/community"
     repository = github.get_repo(repo_name)
 
@@ -69,8 +72,9 @@ def main(prod, github_token):
     else:
         print(issue_text)
 
-    remaining_requests, max_requests = github.rate_limiting
-    print(f"Remaining requests: {remaining_requests}")
+    remaining_requests_after, _ = github.rate_limiting
+    print(f"Remaining requests after: {remaining_requests_after}")
+    print(f"Requests used: {remaining_requests_before - remaining_requests_after}")
 
     run_duration = datetime.now() - start_time
     print(run_duration)
