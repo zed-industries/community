@@ -14,4 +14,4 @@ jobs:
           architecture: "x64"
           cache: "pip"
       - run: pip install -r scripts/update_top_ranking_issues/requirements.txt
-      - run: python scripts/update_top_ranking_issues/main.py ${{ secrets.GITHUB_TOKEN }}
+      - run: python scripts/update_top_ranking_issues/main.py --github-token ${{ secrets.GITHUB_TOKEN }}

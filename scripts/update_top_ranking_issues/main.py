@@ -3,6 +3,7 @@ import sys
 from collections import defaultdict
 from datetime import datetime
 
+import click
 from github import Github
 from pytz import timezone
 
@@ -38,27 +39,16 @@ class IssueData:
         self.labels = set(label["name"] for label in issue._rawData["labels"])
 
 
-def main():
-    github_access_token = os.getenv("GITHUB_TOKEN")
+@click.command()
+@click.option("--prod", default=False)
+@click.option("--github-token")
+def main(prod, github_token):
+    start_time = datetime.now()
 
-    if not github_access_token:
-        raise CommandLineArgumentException(
-            'A GitHub access token must be provided in the env as: "GITHUB_TOKEN"'
-        )
-
-    prod_mode = False
-
-    if len(sys.argv) == 2:
-        prod_mode_text = "prod_mode"
-
-        if sys.argv[1] == prod_mode_text:
-            prod_mode = True
-        else:
-            raise CommandLineArgumentException(
-                f'If first argument is supplied, it must be "{prod_mode_text}"'
-            )
-
-    github = Github(github_access_token)
+    # GitHub Workflow will pass in the token as an environment variable,
+    # but we can place it in our env when running the script locally, for convenience
+    github_token = github_token or os.getenv("GITHUB_TOKEN")
+    github = Github(github_token)
 
     repo_name = "zed-industries/community"
     repository = github.get_repo(repo_name)
@@ -73,7 +63,7 @@ def main():
         error_message_to_erroneous_issue_data_list_map,
     )
 
-    if prod_mode:
+    if prod:
         top_ranking_issues_issue = repository.get_issue(number=52)
         top_ranking_issues_issue.edit(body=issue_text)
     else:
@@ -81,6 +71,9 @@ def main():
 
     remaining_requests, max_requests = github.rate_limiting
     print(f"Remaining requests: {remaining_requests}")
+
+    run_duration = datetime.now() - start_time
+    print(run_duration)
 
 
 def get_issue_maps(github, repository):
@@ -281,7 +274,4 @@ def get_erroneous_issues_lines(error_message_to_erroneous_issue_data_list_map):
 
 
 if __name__ == "__main__":
-    start_time = datetime.now()
     main()
-    run_duration = datetime.now() - start_time
-    print(run_duration)
