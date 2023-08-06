@@ -1,3 +1,4 @@
+import os
 import sys
 from collections import defaultdict
 from datetime import datetime
@@ -11,7 +12,7 @@ CORE_LABEL_NAMES_LIST = [
     "design",
     "documentation",
     "enhancement",
-    "panic / crash"
+    "panic / crash",
 ]
 CORE_LABEL_NAMES_SET = set(CORE_LABEL_NAMES_LIST)
 IGNORED_LABEL_NAMES_LIST = [
@@ -38,22 +39,25 @@ class IssueData:
 
 
 def main():
-    if len(sys.argv) < 2:
-        raise CommandLineArgumentException("A GitHub access token must be supplied")
+    github_access_token = os.getenv("GITHUB_TOKEN")
 
-    dev_mode = False
+    if not github_access_token:
+        raise CommandLineArgumentException(
+            'A GitHub access token must be provided in the env as: "GITHUB_TOKEN"'
+        )
 
-    if len(sys.argv) == 3:
-        dev_mode_text = "dev_mode"
+    prod_mode = False
 
-        if sys.argv[2] == dev_mode_text:
-            dev_mode = True
+    if len(sys.argv) == 2:
+        prod_mode_text = "prod_mode"
+
+        if sys.argv[1] == prod_mode_text:
+            prod_mode = True
         else:
             raise CommandLineArgumentException(
-                f'If second argument is supplied, it must be "{dev_mode_text}"'
+                f'If first argument is supplied, it must be "{prod_mode_text}"'
             )
 
-    github_access_token = sys.argv[1]
     github = Github(github_access_token)
 
     repo_name = "zed-industries/community"
@@ -69,59 +73,30 @@ def main():
         error_message_to_erroneous_issue_data_list_map,
     )
 
-    if dev_mode:
-        print(issue_text)
-    else:
+    if prod_mode:
         top_ranking_issues_issue = repository.get_issue(number=52)
         top_ranking_issues_issue.edit(body=issue_text)
+    else:
+        print(issue_text)
+
+    remaining_requests, max_requests = github.rate_limiting
+    print(f"Remaining requests: {remaining_requests}")
 
 
-# TODO: Refactor this at some point
 def get_issue_maps(github, repository):
-    query_string = f"repo:{repository.full_name} is:open is:issue"
+    label_name_to_issue_list_map = get_label_name_to_issue_list_map(github, repository)
+    label_name_to_issue_data_list_map = get_label_name_to_issue_data_list_map(
+        label_name_to_issue_list_map
+    )
 
-    label_name_to_issue_list_map = defaultdict(list)
-    error_message_to_erroneous_issue_list_map = defaultdict(list)
-
-    for issue in github.search_issues(query_string):
-        labels_on_issue_set = set(label["name"] for label in issue._rawData["labels"])
-        core_labels_on_issue_set = labels_on_issue_set & CORE_LABEL_NAMES_SET
-        ignored_labels_on_issue_set = labels_on_issue_set & IGNORED_LABEL_NAMES_SET
-
-        if ignored_labels_on_issue_set:
-            continue
-
-        if len(core_labels_on_issue_set) == 0:
-            error_message_to_erroneous_issue_list_map["missing core label"].append(
-                issue
-            )
-        else:
-            for core_label_on_issue in core_labels_on_issue_set:
-                label_name_to_issue_list_map[core_label_on_issue].append(issue)
-
-    label_name_to_issue_data_list_map = {}
-
-    for label_name in label_name_to_issue_list_map:
-        issue_list = label_name_to_issue_list_map[label_name]
-        issue_data_list = [IssueData(issue) for issue in issue_list]
-        issue_data_list.sort(
-            key=lambda issue_data: (
-                -issue_data.like_count,
-                issue_data.creation_datetime,
-            )
+    error_message_to_erroneous_issue_list_map = (
+        get_error_message_to_erroneous_issue_list_map(github, repository)
+    )
+    error_message_to_erroneous_issue_data_list_map = (
+        get_error_message_to_erroneous_issue_data_list_map(
+            error_message_to_erroneous_issue_list_map
         )
-
-        issue_data_list = issue_data_list[0:ISSUES_PER_LABEL]
-
-        if issue_data_list:
-            label_name_to_issue_data_list_map[label_name] = issue_data_list
-
-    error_message_to_erroneous_issue_data_list_map = {}
-
-    for label_name in error_message_to_erroneous_issue_list_map:
-        issue_list = error_message_to_erroneous_issue_list_map[label_name]
-        issue_data_list = [IssueData(issue) for issue in issue_list]
-        error_message_to_erroneous_issue_data_list_map[label_name] = issue_data_list
+    )
 
     # Create a new dictionary with labels ordered by the summation the of likes on the associated issues
     label_names = list(label_name_to_issue_data_list_map.keys())
@@ -143,6 +118,80 @@ def get_issue_maps(github, repository):
         label_name_to_issue_data_list_map,
         error_message_to_erroneous_issue_data_list_map,
     )
+
+
+def get_label_name_to_issue_list_map(github, repository):
+    label_name_to_issue_list_map = defaultdict(list)
+
+    for label in CORE_LABEL_NAMES_SET:
+        query_string = f'repo:{repository.full_name} is:open is:issue label:"{label}" sort:reactions-+1-desc'
+
+        issue_count = 0
+
+        for issue in github.search_issues(query_string):
+            labels_on_issue_set = set(
+                label["name"] for label in issue._rawData["labels"]
+            )
+            ignored_labels_on_issue_set = labels_on_issue_set & IGNORED_LABEL_NAMES_SET
+
+            if ignored_labels_on_issue_set:
+                continue
+
+            label_name_to_issue_list_map[label].append(issue)
+
+            issue_count += 1
+
+            if issue_count >= ISSUES_PER_LABEL:
+                break
+
+    return label_name_to_issue_list_map
+
+
+def get_label_name_to_issue_data_list_map(label_name_to_issue_list_map):
+    label_name_to_issue_data_list_map = {}
+
+    for label_name in label_name_to_issue_list_map:
+        issue_list = label_name_to_issue_list_map[label_name]
+        issue_data_list = [IssueData(issue) for issue in issue_list]
+        issue_data_list.sort(
+            key=lambda issue_data: (
+                -issue_data.like_count,
+                issue_data.creation_datetime,
+            )
+        )
+
+        if issue_data_list:
+            label_name_to_issue_data_list_map[label_name] = issue_data_list
+
+    return label_name_to_issue_data_list_map
+
+
+def get_error_message_to_erroneous_issue_list_map(github, repository):
+    error_message_to_erroneous_issue_list_map = defaultdict(list)
+
+    filter_labels = CORE_LABEL_NAMES_SET.union(IGNORED_LABEL_NAMES_SET)
+    filter_labels_string = " ".join([f'-label:"{label}"' for label in filter_labels])
+    query_string = (
+        f"repo:{repository.full_name} is:open is:issue {filter_labels_string}"
+    )
+
+    for issue in github.search_issues(query_string):
+        error_message_to_erroneous_issue_list_map["missing core label"].append(issue)
+
+    return error_message_to_erroneous_issue_list_map
+
+
+def get_error_message_to_erroneous_issue_data_list_map(
+    error_message_to_erroneous_issue_list_map,
+):
+    error_message_to_erroneous_issue_data_list_map = {}
+
+    for label_name in error_message_to_erroneous_issue_list_map:
+        issue_list = error_message_to_erroneous_issue_list_map[label_name]
+        issue_data_list = [IssueData(issue) for issue in issue_list]
+        error_message_to_erroneous_issue_data_list_map[label_name] = issue_data_list
+
+    return error_message_to_erroneous_issue_data_list_map
 
 
 def get_issue_text(
@@ -169,10 +218,10 @@ def get_issue_text(
 
     if erroneous_issues_lines:
         core_label_names_string = ", ".join(
-            f'"{core_label_name}"' for core_label_name in CORE_LABEL_NAMES_LIST
+            f'"{core_label_name}"' for core_label_name in CORE_LABEL_NAMES_SET
         )
         ignored_label_names_string = ", ".join(
-            f'"{ignored_label_name}"' for ignored_label_name in IGNORED_LABEL_NAMES_LIST
+            f'"{ignored_label_name}"' for ignored_label_name in IGNORED_LABEL_NAMES_SET
         )
 
         issue_text_lines.extend(
@@ -206,7 +255,9 @@ def get_highest_ranking_issues_lines(label_name_to_issue_data_list_dictionary):
             highest_ranking_issues_lines.append(f"\n## {label}\n")
 
             for issue_data in issue_data_list:
-                markdown_bullet_point = f"{issue_data.url} ({issue_data.like_count} :thumbsup:)"
+                markdown_bullet_point = (
+                    f"{issue_data.url} ({issue_data.like_count} :thumbsup:)"
+                )
                 markdown_bullet_point = f"- {markdown_bullet_point}"
                 highest_ranking_issues_lines.append(markdown_bullet_point)
 
@@ -234,6 +285,3 @@ if __name__ == "__main__":
     main()
     run_duration = datetime.now() - start_time
     print(run_duration)
-
-# TODO: Progress prints
-# - "Gathering issues..."
