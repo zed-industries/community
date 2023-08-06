@@ -117,25 +117,13 @@ def get_label_name_to_issue_list_map(github, repository):
     label_name_to_issue_list_map = defaultdict(list)
 
     for label in CORE_LABEL_NAMES_SET:
-        query_string = f'repo:{repository.full_name} is:open is:issue label:"{label}" sort:reactions-+1-desc'
+        filter_labels_string = " ".join(
+            [f'-label:"{label}"' for label in IGNORED_LABEL_NAMES_SET]
+        )
+        query_string = f'repo:{repository.full_name} is:open is:issue label:"{label}" {filter_labels_string} sort:reactions-+1-desc'
 
-        issue_count = 0
-
-        for issue in github.search_issues(query_string):
-            labels_on_issue_set = set(
-                label["name"] for label in issue._rawData["labels"]
-            )
-            ignored_labels_on_issue_set = labels_on_issue_set & IGNORED_LABEL_NAMES_SET
-
-            if ignored_labels_on_issue_set:
-                continue
-
+        for issue in github.search_issues(query_string)[0:ISSUES_PER_LABEL]:
             label_name_to_issue_list_map[label].append(issue)
-
-            issue_count += 1
-
-            if issue_count >= ISSUES_PER_LABEL:
-                break
 
     return label_name_to_issue_list_map
 
