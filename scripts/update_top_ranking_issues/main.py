@@ -8,25 +8,27 @@ from github import Github
 from pytz import timezone
 
 DATETIME_FORMAT_STRING = "%m/%d/%Y %I:%M %p"
-CORE_LABEL_NAMES_SET = set([
-    "defect",
-    "design",
-    "documentation",
-    "enhancement",
-    "panic / crash",
-])
+CORE_LABEL_NAMES_SET = set(
+    [
+        "defect",
+        "design",
+        "documentation",
+        "enhancement",
+        "panic / crash",
+    ]
+)
 # A set of labels sed for adding in labels that we want present in the final
 # report, but that we don't want being defined as a core label, since issues
 # with without core labels are flagged as errors.
-ADDITIONAL_LABEL_NAMES_SET = set([
-    "vim"
-])
-IGNORED_LABEL_NAMES_SET = set([
-    "meta",
-    "linux",
-    "web",
-    "windows",
-])
+ADDITIONAL_LABEL_NAMES_SET = set(["vim"])
+IGNORED_LABEL_NAMES_SET = set(
+    [
+        "meta",
+        "linux",
+        "web",
+        "windows",
+    ]
+)
 ISSUES_PER_LABEL = 20
 
 
@@ -72,7 +74,9 @@ def main(prod, github_token):
 
     if prod:
         top_ranking_issues_issue_number = 52
-        top_ranking_issues_issue = repository.get_issue(number=top_ranking_issues_issue_number)
+        top_ranking_issues_issue = repository.get_issue(
+            number=top_ranking_issues_issue_number
+        )
         top_ranking_issues_issue.edit(body=issue_text)
     else:
         print(issue_text)
