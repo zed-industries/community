@@ -8,21 +8,25 @@ from github import Github
 from pytz import timezone
 
 DATETIME_FORMAT_STRING = "%m/%d/%Y %I:%M %p"
-CORE_LABEL_NAMES_LIST = [
+CORE_LABEL_NAMES_SET = set([
     "defect",
     "design",
     "documentation",
     "enhancement",
     "panic / crash",
-]
-CORE_LABEL_NAMES_SET = set(CORE_LABEL_NAMES_LIST)
-IGNORED_LABEL_NAMES_LIST = [
+])
+# A set of labels sed for adding in labels that we want present in the final
+# report, but that we don't want being defined as a core label, since issues
+# with without core labels are flagged as errors.
+ADDITIONAL_LABEL_NAMES_SET = set([
+    "vim"
+])
+IGNORED_LABEL_NAMES_SET = set([
     "meta",
     "linux",
     "web",
     "windows",
-]
-IGNORED_LABEL_NAMES_SET = set(IGNORED_LABEL_NAMES_LIST)
+])
 ISSUES_PER_LABEL = 20
 
 
@@ -67,7 +71,8 @@ def main(prod, github_token):
     )
 
     if prod:
-        top_ranking_issues_issue = repository.get_issue(number=52)
+        top_ranking_issues_issue_number = 52
+        top_ranking_issues_issue = repository.get_issue(number=top_ranking_issues_issue_number)
         top_ranking_issues_issue.edit(body=issue_text)
     else:
         print(issue_text)
@@ -120,7 +125,9 @@ def get_issue_maps(github, repository):
 def get_label_name_to_issue_list_map(github, repository):
     label_name_to_issue_list_map = defaultdict(list)
 
-    for label in CORE_LABEL_NAMES_SET:
+    labels = CORE_LABEL_NAMES_SET.union(ADDITIONAL_LABEL_NAMES_SET)
+
+    for label in labels:
         filter_labels_string = " ".join(
             [f'-label:"{label}"' for label in IGNORED_LABEL_NAMES_SET]
         )
