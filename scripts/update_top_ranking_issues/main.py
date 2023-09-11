@@ -17,7 +17,7 @@ CORE_LABEL_NAMES_SET = set(
         "panic / crash",
     ]
 )
-# A set of labels sed for adding in labels that we want present in the final
+# A set of labels for adding in labels that we want present in the final
 # report, but that we don't want being defined as a core label, since issues
 # with without core labels are flagged as errors.
 ADDITIONAL_LABEL_NAMES_SET = set(["vim"])
