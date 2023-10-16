@@ -250,11 +250,12 @@ def get_highest_ranking_issues_lines(label_name_to_issue_data_list_dictionary):
         for label, issue_data_list in label_name_to_issue_data_list_dictionary.items():
             highest_ranking_issues_lines.append(f"\n## {label}\n")
 
-            for issue_data in issue_data_list:
+            for i, issue_data in enumerate(issue_data_list):
                 markdown_bullet_point = (
                     f"{issue_data.url} ({issue_data.like_count} :thumbsup:)"
                 )
-                markdown_bullet_point = f"- {markdown_bullet_point}"
+
+                markdown_bullet_point = f"{i + 1}. {markdown_bullet_point}"
                 highest_ranking_issues_lines.append(markdown_bullet_point)
 
     return highest_ranking_issues_lines
