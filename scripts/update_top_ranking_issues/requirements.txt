@@ -1,3 +1,4 @@
-click==8.1.6
+mypy==1.6.0
 PyGithub==1.55
 pytz==2022.1
+typer==0.9.0
