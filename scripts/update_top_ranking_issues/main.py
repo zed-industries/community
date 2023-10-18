@@ -45,10 +45,10 @@ class CommandLineArgumentException(Exception):
 class IssueData:
     def __init__(self, issue: Issue) -> None:
         self.url: str = issue.html_url
-        self.like_count: int = issue._rawData["reactions"]["+1"] # type: ignore [attr-defined]
+        self.like_count: int = issue._rawData["reactions"]["+1"]  # type: ignore [attr-defined]
         self.creation_datetime: str = issue.created_at.strftime(DATETIME_FORMAT_STRING)
         # TODO: Change script to support storing labels here, rather than directly in the script
-        self.labels: set[str] = set(label["name"] for label in issue._rawData["labels"]) # type: ignore [attr-defined]
+        self.labels: set[str] = set(label["name"] for label in issue._rawData["labels"])  # type: ignore [attr-defined]
 
 
 @app.command()
@@ -96,19 +96,23 @@ def main(github_token: Optional[str] = None, prod: bool = False) -> None:
     print(run_duration)
 
 
-def get_issue_maps(github: Github, repository: Repository) -> tuple[dict[str, list[IssueData]], dict[str, list[IssueData]]]:
-    label_name_to_issue_list_map: defaultdict[str, list[Issue]] = get_label_name_to_issue_list_map(github, repository)
-    label_name_to_issue_data_list_map: dict[str, list[IssueData]] = get_label_name_to_issue_data_list_map(
-        label_name_to_issue_list_map
-    )
+def get_issue_maps(
+    github: Github, repository: Repository
+) -> tuple[dict[str, list[IssueData]], dict[str, list[IssueData]]]:
+    label_name_to_issue_list_map: defaultdict[
+        str, list[Issue]
+    ] = get_label_name_to_issue_list_map(github, repository)
+    label_name_to_issue_data_list_map: dict[
+        str, list[IssueData]
+    ] = get_label_name_to_issue_data_list_map(label_name_to_issue_list_map)
 
-    error_message_to_erroneous_issue_list_map: defaultdict[str, list[Issue]] = (
-        get_error_message_to_erroneous_issue_list_map(github, repository)
-    )
-    error_message_to_erroneous_issue_data_list_map: dict[str, list[IssueData]] = (
-        get_error_message_to_erroneous_issue_data_list_map(
-            error_message_to_erroneous_issue_list_map
-        )
+    error_message_to_erroneous_issue_list_map: defaultdict[
+        str, list[Issue]
+    ] = get_error_message_to_erroneous_issue_list_map(github, repository)
+    error_message_to_erroneous_issue_data_list_map: dict[
+        str, list[IssueData]
+    ] = get_error_message_to_erroneous_issue_data_list_map(
+        error_message_to_erroneous_issue_list_map
     )
 
     # Create a new dictionary with labels ordered by the summation the of likes on the associated issues
@@ -133,7 +137,9 @@ def get_issue_maps(github: Github, repository: Repository) -> tuple[dict[str, li
     )
 
 
-def get_label_name_to_issue_list_map(github, repository) -> defaultdict[str, list[Issue]]:
+def get_label_name_to_issue_list_map(
+    github, repository
+) -> defaultdict[str, list[Issue]]:
     label_name_to_issue_list_map: defaultdict[str, list[Issue]] = defaultdict(list)
 
     labels: set[str] = CORE_LABEL_NAMES_SET | ADDITIONAL_LABEL_NAMES_SET
@@ -150,7 +156,9 @@ def get_label_name_to_issue_list_map(github, repository) -> defaultdict[str, lis
     return label_name_to_issue_list_map
 
 
-def get_label_name_to_issue_data_list_map(label_name_to_issue_list_map: defaultdict[str, list[Issue]]) -> dict[str, list[IssueData]]:
+def get_label_name_to_issue_data_list_map(
+    label_name_to_issue_list_map: defaultdict[str, list[Issue]]
+) -> dict[str, list[IssueData]]:
     label_name_to_issue_data_list_map: dict[str, list[IssueData]] = {}
 
     for label_name in label_name_to_issue_list_map:
@@ -169,11 +177,17 @@ def get_label_name_to_issue_data_list_map(label_name_to_issue_list_map: defaultd
     return label_name_to_issue_data_list_map
 
 
-def get_error_message_to_erroneous_issue_list_map(github: Github, repository: Repository) -> defaultdict[str, list[Issue]]:
-    error_message_to_erroneous_issue_list_map: defaultdict[str, list[Issue]] = defaultdict(list)
+def get_error_message_to_erroneous_issue_list_map(
+    github: Github, repository: Repository
+) -> defaultdict[str, list[Issue]]:
+    error_message_to_erroneous_issue_list_map: defaultdict[
+        str, list[Issue]
+    ] = defaultdict(list)
 
     filter_labels: set[str] = CORE_LABEL_NAMES_SET | IGNORED_LABEL_NAMES_SET
-    filter_labels_string: str = " ".join([f'-label:"{label}"' for label in filter_labels])
+    filter_labels_string: str = " ".join(
+        [f'-label:"{label}"' for label in filter_labels]
+    )
     query_string: str = (
         f"repo:{repository.full_name} is:open is:issue {filter_labels_string}"
     )
@@ -201,7 +215,6 @@ def get_issue_text(
     label_name_to_issue_data_list_dictionary: dict[str, list[IssueData]],
     error_message_to_erroneous_issue_data_list_map: dict[str, list[IssueData]],
 ) -> str:
-    # TODO: Add typing
     tz = timezone("america/new_york")
     current_datetime: str = datetime.now(tz).strftime(f"{DATETIME_FORMAT_STRING} (%Z)")
 
@@ -251,7 +264,9 @@ def get_issue_text(
     return "\n".join(issue_text_lines)
 
 
-def get_highest_ranking_issues_lines(label_name_to_issue_data_list_dictionary) -> list[str]:
+def get_highest_ranking_issues_lines(
+    label_name_to_issue_data_list_dictionary,
+) -> list[str]:
     highest_ranking_issues_lines: list[str] = []
 
     if label_name_to_issue_data_list_dictionary:
@@ -269,7 +284,9 @@ def get_highest_ranking_issues_lines(label_name_to_issue_data_list_dictionary) -
     return highest_ranking_issues_lines
 
 
-def get_erroneous_issues_lines(error_message_to_erroneous_issue_data_list_map) -> list[str]:
+def get_erroneous_issues_lines(
+    error_message_to_erroneous_issue_data_list_map,
+) -> list[str]:
     erroneous_issues_lines: list[str] = []
 
     if error_message_to_erroneous_issue_data_list_map:
