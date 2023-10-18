@@ -76,10 +76,7 @@ def main(github_token: Optional[str] = None, prod: bool = False) -> None:
     )
 
     if prod:
-        top_ranking_issues_issue_number: int = 52
-        top_ranking_issues_issue: Issue = repository.get_issue(
-            top_ranking_issues_issue_number
-        )
+        top_ranking_issues_issue: Issue = repository.get_issue(52)
         top_ranking_issues_issue.edit(body=issue_text)
     else:
         print(issue_text)
@@ -135,12 +132,10 @@ def get_label_name_to_issues(github, repository) -> defaultdict[str, list[Issue]
     labels: set[str] = CORE_LABELS | ADDITIONAL_LABELS
 
     for label in labels:
-        filter_labels_string: str = " ".join(
-            [f'-label:"{label}"' for label in IGNORED_LABELS]
-        )
-        query_string: str = f'repo:{repository.full_name} is:open is:issue label:"{label}" {filter_labels_string} sort:reactions-+1-desc'
+        filter_labels: str = " ".join([f'-label:"{label}"' for label in IGNORED_LABELS])
+        query: str = f'repo:{repository.full_name} is:open is:issue label:"{label}" {filter_labels} sort:reactions-+1-desc'
 
-        for issue in github.search_issues(query_string)[0:ISSUES_PER_LABEL]:
+        for issue in github.search_issues(query)[0:ISSUES_PER_LABEL]:
             label_name_to_issues[label].append(issue)
 
     return label_name_to_issues
@@ -173,14 +168,10 @@ def get_error_message_to_erroneous_issues(
     error_message_to_erroneous_issues: defaultdict[str, list[Issue]] = defaultdict(list)
 
     filter_labels: set[str] = CORE_LABELS | IGNORED_LABELS
-    filter_labels_string: str = " ".join(
-        [f'-label:"{label}"' for label in filter_labels]
-    )
-    query_string: str = (
-        f"repo:{repository.full_name} is:open is:issue {filter_labels_string}"
-    )
+    filter_labels: str = " ".join([f'-label:"{label}"' for label in filter_labels])
+    query: str = f"repo:{repository.full_name} is:open is:issue {filter_labels}"
 
-    for issue in github.search_issues(query_string):
+    for issue in github.search_issues(query):
         error_message_to_erroneous_issues["missing core label"].append(issue)
 
     return error_message_to_erroneous_issues
@@ -222,18 +213,18 @@ def get_issue_text(
     )
 
     if erroneous_issues_lines:
-        core_label_names_string: str = ", ".join(
+        core_label_names: str = ", ".join(
             f'"{core_label_name}"' for core_label_name in CORE_LABELS
         )
-        ignored_label_names_string: str = ", ".join(
+        ignored_label_names: str = ", ".join(
             f'"{ignored_label_name}"' for ignored_label_name in IGNORED_LABELS
         )
 
         issue_text_lines.extend(
             [
                 "## errors with issues (this section only shows when there are errors with issues)\n",
-                f"This script expects every issue to have at least one of the following core labels: {core_label_names_string}",
-                f"This script currently ignores issues that have one of the following labels: {ignored_label_names_string}\n",
+                f"This script expects every issue to have at least one of the following core labels: {core_label_names}",
+                f"This script currently ignores issues that have one of the following labels: {ignored_label_names}\n",
                 "### what to do?\n",
                 "- Adjust the core labels on an issue to put it into a correct state or add a currently-ignored label to the issue",
                 "- Adjust the core and ignored labels registered in this script",
