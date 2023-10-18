@@ -84,7 +84,7 @@ def main(github_token: Optional[str] = None, prod: bool = False) -> None:
         top_ranking_issues_issue: Issue = repository.get_issue(
             top_ranking_issues_issue_number
         )
-        top_ranking_issues_issue.edit(issue_text)
+        top_ranking_issues_issue.edit(body=issue_text)
     else:
         print(issue_text)
 
