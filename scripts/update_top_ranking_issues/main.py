@@ -38,10 +38,6 @@ IGNORED_LABEL_NAMES_SET: set[str] = set(
 ISSUES_PER_LABEL: int = 20
 
 
-class CommandLineArgumentException(Exception):
-    pass
-
-
 class IssueData:
     def __init__(self, issue: Issue) -> None:
         self.url: str = issue.html_url
