@@ -305,7 +305,5 @@ def get_erroneous_issues_lines(
 if __name__ == "__main__":
     app()
 
-# Check with mypy?
-# Format with black
-# Reduce wordy variable names now that types exist
-# Sort label output into core and non core sections
+# TODO: Reduce wordy variable names now that types exist
+# TODO: Sort label output into core and non core sections
