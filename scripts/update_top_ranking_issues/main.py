@@ -63,15 +63,15 @@ def main(github_token: Optional[str] = None, prod: bool = False) -> None:
     repository: Repository = github.get_repo(repo_name)
 
     # There has to be a nice way of adding types to tuple unpacking
-    label_name_to_issue_data: dict[str, list[IssueData]]
+    label_to_issue_data: dict[str, list[IssueData]]
     error_message_to_erroneous_issue_data: dict[str, list[IssueData]]
     (
-        label_name_to_issue_data,
+        label_to_issue_data,
         error_message_to_erroneous_issue_data,
     ) = get_issue_maps(github, repository)
 
     issue_text: str = get_issue_text(
-        label_name_to_issue_data,
+        label_to_issue_data,
         error_message_to_erroneous_issue_data,
     )
 
@@ -92,11 +92,11 @@ def main(github_token: Optional[str] = None, prod: bool = False) -> None:
 def get_issue_maps(
     github: Github, repository: Repository
 ) -> tuple[dict[str, list[IssueData]], dict[str, list[IssueData]]]:
-    label_name_to_issues: defaultdict[str, list[Issue]] = get_label_name_to_issues(
+    label_to_issues: defaultdict[str, list[Issue]] = get_label_to_issues(
         github, repository
     )
-    label_name_to_issue_data: dict[str, list[IssueData]] = get_label_name_to_issue_data(
-        label_name_to_issues
+    label_to_issue_data: dict[str, list[IssueData]] = get_label_to_issue_data(
+        label_to_issues
     )
 
     error_message_to_erroneous_issues: defaultdict[
@@ -107,47 +107,47 @@ def get_issue_maps(
     ] = get_error_message_to_erroneous_issue_data(error_message_to_erroneous_issues)
 
     # Create a new dictionary with labels ordered by the summation the of likes on the associated issues
-    label_names = list(label_name_to_issue_data.keys())
+    labels = list(label_to_issue_data.keys())
 
-    label_names.sort(
-        key=lambda label_name: sum(
-            issue_data.like_count for issue_data in label_name_to_issue_data[label_name]
+    labels.sort(
+        key=lambda label: sum(
+            issue_data.like_count for issue_data in label_to_issue_data[label]
         ),
         reverse=True,
     )
 
-    label_name_to_issue_data = {
-        label_name: label_name_to_issue_data[label_name] for label_name in label_names
-    }
+    label_to_issue_data = {label: label_to_issue_data[label] for label in labels}
 
     return (
-        label_name_to_issue_data,
+        label_to_issue_data,
         error_message_to_erroneous_issue_data,
     )
 
 
-def get_label_name_to_issues(github, repository) -> defaultdict[str, list[Issue]]:
-    label_name_to_issues: defaultdict[str, list[Issue]] = defaultdict(list)
+def get_label_to_issues(github, repository) -> defaultdict[str, list[Issue]]:
+    label_to_issues: defaultdict[str, list[Issue]] = defaultdict(list)
 
     labels: set[str] = CORE_LABELS | ADDITIONAL_LABELS
+    ignored_labels_text: str = " ".join(
+        [f'-label:"{label}"' for label in IGNORED_LABELS]
+    )
 
     for label in labels:
-        filter_labels: str = " ".join([f'-label:"{label}"' for label in IGNORED_LABELS])
-        query: str = f'repo:{repository.full_name} is:open is:issue label:"{label}" {filter_labels} sort:reactions-+1-desc'
+        query: str = f'repo:{repository.full_name} is:open is:issue label:"{label}" {ignored_labels_text} sort:reactions-+1-desc'
 
         for issue in github.search_issues(query)[0:ISSUES_PER_LABEL]:
-            label_name_to_issues[label].append(issue)
+            label_to_issues[label].append(issue)
 
-    return label_name_to_issues
+    return label_to_issues
 
 
-def get_label_name_to_issue_data(
-    label_name_to_issues: defaultdict[str, list[Issue]]
+def get_label_to_issue_data(
+    label_to_issues: defaultdict[str, list[Issue]]
 ) -> dict[str, list[IssueData]]:
-    label_name_to_issue_data: dict[str, list[IssueData]] = {}
+    label_to_issue_data: dict[str, list[IssueData]] = {}
 
-    for label_name in label_name_to_issues:
-        issues: list[Issue] = label_name_to_issues[label_name]
+    for label in label_to_issues:
+        issues: list[Issue] = label_to_issues[label]
         issue_data: list[IssueData] = [IssueData(issue) for issue in issues]
         issue_data.sort(
             key=lambda issue_data: (
@@ -157,9 +157,9 @@ def get_label_name_to_issue_data(
         )
 
         if issue_data:
-            label_name_to_issue_data[label_name] = issue_data
+            label_to_issue_data[label] = issue_data
 
-    return label_name_to_issue_data
+    return label_to_issue_data
 
 
 def get_error_message_to_erroneous_issues(
@@ -167,9 +167,10 @@ def get_error_message_to_erroneous_issues(
 ) -> defaultdict[str, list[Issue]]:
     error_message_to_erroneous_issues: defaultdict[str, list[Issue]] = defaultdict(list)
 
+    # Query for all open issues that don't have either a core or ignored label and mark those as erroneous
     filter_labels: set[str] = CORE_LABELS | IGNORED_LABELS
-    filter_labels: str = " ".join([f'-label:"{label}"' for label in filter_labels])
-    query: str = f"repo:{repository.full_name} is:open is:issue {filter_labels}"
+    filter_labels_text: str = " ".join([f'-label:"{label}"' for label in filter_labels])
+    query: str = f"repo:{repository.full_name} is:open is:issue {filter_labels_text}"
 
     for issue in github.search_issues(query):
         error_message_to_erroneous_issues["missing core label"].append(issue)
@@ -182,23 +183,23 @@ def get_error_message_to_erroneous_issue_data(
 ) -> dict[str, list[IssueData]]:
     error_message_to_erroneous_issue_data: dict[str, list[IssueData]] = {}
 
-    for label_name in error_message_to_erroneous_issues:
-        issues: list[Issue] = error_message_to_erroneous_issues[label_name]
+    for label in error_message_to_erroneous_issues:
+        issues: list[Issue] = error_message_to_erroneous_issues[label]
         issue_data: list[IssueData] = [IssueData(issue) for issue in issues]
-        error_message_to_erroneous_issue_data[label_name] = issue_data
+        error_message_to_erroneous_issue_data[label] = issue_data
 
     return error_message_to_erroneous_issue_data
 
 
 def get_issue_text(
-    label_name_to_issue_data: dict[str, list[IssueData]],
+    label_to_issue_data: dict[str, list[IssueData]],
     error_message_to_erroneous_issue_data: dict[str, list[IssueData]],
 ) -> str:
     tz = timezone("america/new_york")
     current_datetime: str = datetime.now(tz).strftime(f"{DATETIME_FORMAT} (%Z)")
 
     highest_ranking_issues_lines: list[str] = get_highest_ranking_issues_lines(
-        label_name_to_issue_data
+        label_to_issue_data
     )
 
     issue_text_lines: list[str] = [
@@ -213,18 +214,18 @@ def get_issue_text(
     )
 
     if erroneous_issues_lines:
-        core_label_names: str = ", ".join(
-            f'"{core_label_name}"' for core_label_name in CORE_LABELS
+        core_labels_text: str = ", ".join(
+            f'"{core_label}"' for core_label in CORE_LABELS
         )
-        ignored_label_names: str = ", ".join(
-            f'"{ignored_label_name}"' for ignored_label_name in IGNORED_LABELS
+        ignored_labels_text: str = ", ".join(
+            f'"{ignored_label}"' for ignored_label in IGNORED_LABELS
         )
 
         issue_text_lines.extend(
             [
                 "## errors with issues (this section only shows when there are errors with issues)\n",
-                f"This script expects every issue to have at least one of the following core labels: {core_label_names}",
-                f"This script currently ignores issues that have one of the following labels: {ignored_label_names}\n",
+                f"This script expects every issue to have at least one of the following core labels: {core_labels_text}",
+                f"This script currently ignores issues that have one of the following labels: {ignored_labels_text}\n",
                 "### what to do?\n",
                 "- Adjust the core labels on an issue to put it into a correct state or add a currently-ignored label to the issue",
                 "- Adjust the core and ignored labels registered in this script",
@@ -244,12 +245,12 @@ def get_issue_text(
 
 
 def get_highest_ranking_issues_lines(
-    label_name_to_issue_data: dict[str, list[IssueData]],
+    label_to_issue_data: dict[str, list[IssueData]],
 ) -> list[str]:
     highest_ranking_issues_lines: list[str] = []
 
-    if label_name_to_issue_data:
-        for label, issue_data in label_name_to_issue_data.items():
+    if label_to_issue_data:
+        for label, issue_data in label_to_issue_data.items():
             highest_ranking_issues_lines.append(f"\n## {label}\n")
 
             for i, issue_data in enumerate(issue_data):
