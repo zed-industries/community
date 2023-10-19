@@ -53,7 +53,7 @@ def main(github_token: Optional[str] = None, prod: bool = False) -> None:
 
     # GitHub Workflow will pass in the token as an environment variable,
     # but we can place it in our env when running the script locally, for convenience
-    github_token = github_token or os.getenv("GITHUB_TOKEN")
+    github_token = github_token or os.getenv("GITHUB_ACCESS_TOKEN")
     github = Github(github_token)
 
     remaining_requests_before: int = github.rate_limiting[0]
