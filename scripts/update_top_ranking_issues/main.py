@@ -124,7 +124,9 @@ def get_issue_maps(
     )
 
 
-def get_label_to_issues(github, repository) -> defaultdict[str, list[Issue]]:
+def get_label_to_issues(
+    github: Github, repository: Repository
+) -> defaultdict[str, list[Issue]]:
     label_to_issues: defaultdict[str, list[Issue]] = defaultdict(list)
 
     labels: set[str] = CORE_LABELS | ADDITIONAL_LABELS
