@@ -12,7 +12,7 @@ body:
                 required: true
     - type: textarea
       attributes:
-          label: Describe the feature that was lost
+          label: Describe the regression
       validations:
           required: true
     - type: textarea
