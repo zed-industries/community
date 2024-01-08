@@ -1,6 +1,6 @@
 # This is just a temporary template - we will delete this once we move preview to stable
 name: Parity Report
-description: "Use this issue to report that a regression occurred in the transition between gpui-1 Zed and gpui-2 Zed"
+description: "Report that a regression occurred in the transition between gpui-1 Zed and gpui-2 Zed"
 labels: ["admin read", "triage", "enhancement", "defect", "parity"]
 body:
     - type: checkboxes
