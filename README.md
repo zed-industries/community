@@ -1,3 +1,5 @@
+🚨 The [Zed repository](https://github.com/zed-industries/zed) is now open source! Please open your issues there. 🚨
+
 # Community
 
 Welcome to Zed's community! **Please make sure to review our [Code of Conduct](https://docs.zed.dev/community/code-of-conduct) document.**
